@@ -8,6 +8,8 @@
 
 ```shell
 pip3 install https://github.com/Rhythmicc/TransServ.git -U
+# 或离线安装
+pip3 install dist/TransServ-<VERSION>.tar.gz
 ```
 
 ## 使用
