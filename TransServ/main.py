@@ -34,7 +34,7 @@ def serv(auto_paste: bool = False):
             _cur = pyperclip.paste()
             if _cur != cur:
                 cur = _cur
-                res += " " + cur.replace("\r", "").replace("\n", " ")
+                res += " " + cur.replace("\r", "").replace("\n", " ").replace("ﬁ", "fi")
                 QproDefaultConsole.clear()
                 QproDefaultConsole.print(
                     Panel("[bold green]" + res + "[/]", title="当前记录", width=_width)
