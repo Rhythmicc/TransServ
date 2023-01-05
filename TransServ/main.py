@@ -12,6 +12,7 @@ def serv(auto_paste: bool = False):
 
     :param auto_paste: 是否自动粘贴翻译结果
     """
+    import re
     import time
     import pyperclip
     import keyboard as kb
@@ -30,11 +31,26 @@ def serv(auto_paste: bool = False):
     def record():
         res = ""
         cur = pyperclip.paste()
+        replace_table = {
+            re.escape("\r"): "",
+            re.escape("\n"): " ",
+            re.escape("ﬁ"): "fi",
+            re.escape("ﬂ"): "fl",
+            re.escape("ﬀ"): "ff",
+            re.escape("ﬃ"): "ffi",
+            re.escape("ﬄ"): "ffl",
+            re.escape("ﬅ"): "ft",
+            re.escape("ﬆ"): "st",
+        }
+        pattern = re.compile("|".join(replace_table.keys()))
+
         while True:
             _cur = pyperclip.paste()
             if _cur != cur:
                 cur = _cur
-                res += " " + cur.replace("\r", "").replace("\n", " ").replace("ﬁ", "fi")
+                res += " " + pattern.sub(
+                    lambda m: replace_table[re.escape(m.group(0))], cur
+                )
                 QproDefaultConsole.clear()
                 QproDefaultConsole.print(
                     Panel("[bold green]" + res + "[/]", title="当前记录", width=_width)
