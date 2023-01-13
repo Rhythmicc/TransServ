@@ -21,7 +21,6 @@ def serv(auto_paste: bool = False):
     from rich.panel import Panel
     from QuickStart_Rhy import system
     from QuickStart_Rhy.api import translate
-    from QuickStart_Rhy.ThreadTools import ThreadFunctionWrapper
     from QuickProject import QproErrorString
 
     _width = QproDefaultConsole.width
