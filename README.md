@@ -7,9 +7,7 @@
 ## 安装
 
 ```shell
-pip3 install https://github.com/Rhythmicc/TransServ.git -U
-# 或离线安装
-pip3 install dist/TransServ-<VERSION>.tar.gz
+pip3 install git+https://github.com/Rhythmicc/TransServ.git -U
 ```
 
 ## 使用
