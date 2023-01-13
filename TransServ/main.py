@@ -21,6 +21,7 @@ def serv(auto_paste: bool = False):
     from rich.panel import Panel
     from QuickStart_Rhy import system
     from QuickStart_Rhy.api import translate
+    from QuickStart_Rhy.ThreadTools import ThreadFunctionWrapper
     from QuickProject import QproErrorString
 
     _width = QproDefaultConsole.width
@@ -44,22 +45,29 @@ def serv(auto_paste: bool = False):
         }
         pattern = re.compile("|".join(replace_table.keys()))
 
+        is_busy = False
+
         while True:
             _cur = pyperclip.paste()
             if _cur != cur:
+                is_busy = True
                 cur = _cur
                 res += " " + pattern.sub(
                     lambda m: replace_table[re.escape(m.group(0))], cur
                 )
+                external_exec("say 已记录", __no_wait=True)
                 QproDefaultConsole.clear()
                 QproDefaultConsole.print(
                     Panel("[bold green]" + res + "[/]", title="当前记录", width=_width)
                 )
             if kb.is_pressed(finishCopy):
+                external_exec("say 完成记录", __no_wait=True)
                 break
             elif kb.is_pressed(cancelCopy):
+                external_exec("say 取消记录", __no_wait=True)
+                QproDefaultConsole.clear()
                 return None
-            time.sleep(0.05)
+            time.sleep(0.05 if is_busy else 1.5)
         return res.strip()
 
     # 监听粘贴板
