@@ -17,6 +17,7 @@ pip3 install dist/TransServ-<VERSION>.tar.gz
 ```shell
 ts --help # 查看帮助
 ts serv   # 启动服务
+sudo ts serv --auto_paste # 在Mac上启动服务，翻译完成后自动粘贴
 ```
 
 1. 默认监听中可以连续复制文本，复制完毕后按下`f2`表示复制完毕并进行翻译、按下`esc`表示取消当前记录。
