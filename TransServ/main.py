@@ -70,7 +70,7 @@ def serv(auto_paste: bool = False):
         return res.strip()
 
     # 监听粘贴板
-    with QproDefaultConsole.status("监听记录中...") as status:
+    with QproDefaultStatus("监听记录中...") as status:
         while True:
             if ct := record():
                 status.update("正在翻译...")
