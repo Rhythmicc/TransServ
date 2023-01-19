@@ -19,7 +19,7 @@ def serv(auto_paste: bool = False):
     from pynput import keyboard
     from pynput.keyboard import Key
     from rich.panel import Panel
-    from QuickStart_Rhy import system
+    from QuickStart_Rhy import platform
     from QuickStart_Rhy.api import translate
     from QuickProject import QproErrorString
 
@@ -85,12 +85,12 @@ def serv(auto_paste: bool = False):
                     pyperclip.copy(res)
                     if auto_paste:
                         keyboard_controller.press(
-                            Key.cmd if system.startswith("darwin") else Key.ctrl
+                            Key.cmd if platform.startswith("darwin") else Key.ctrl
                         )
                         keyboard_controller.press("v")
                         keyboard_controller.release("v")
                         keyboard_controller.release(
-                            Key.cmd if system.startswith("darwin") else Key.ctrl
+                            Key.cmd if platform.startswith("darwin") else Key.ctrl
                         )
 
                     QproDefaultConsole.clear()
