@@ -1,8 +1,8 @@
-<h1 style="text-align: center"> TransServ </h1>
+# TransServ
 
 监听粘贴板内容并自动拷贝翻译结果。
 
-![](https://cos.rhythmlian.cn/ImgBed/579ccb0a5e33aca05e88ee5928524788.png)
+![example](https://cos.rhythmlian.cn/ImgBed/579ccb0a5e33aca05e88ee5928524788.png)
 
 ## 安装
 
