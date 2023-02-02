@@ -51,19 +51,30 @@ def serv(auto_paste: bool = False):
             if _cur != cur:
                 is_busy = True
                 cur = _cur
+                if not isinstance(cur, str):  # 防止出现非字符串类型
+                    continue
                 res += " " + pattern.sub(
                     lambda m: replace_table[re.escape(m.group(0))], cur
                 )
-                external_exec("say 已记录", __no_wait=True)
+                external_exec(
+                    f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","recorded.mp3",)}',
+                    __no_wait=True,
+                )
                 QproDefaultConsole.clear()
                 QproDefaultConsole.print(
                     Panel("[bold green]" + res + "[/]", title="当前记录", width=_width)
                 )
-            if kb.is_pressed(finishCopy):
-                external_exec("say 完成记录", __no_wait=True)
+            if kb.is_pressed(finishCopy) and is_busy:
+                external_exec(
+                    f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","translating.mp3",)}',
+                    __no_wait=True,
+                )
                 break
-            elif kb.is_pressed(cancelCopy):
-                external_exec("say 取消记录", __no_wait=True)
+            elif kb.is_pressed(cancelCopy) and is_busy:
+                external_exec(
+                    f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","cancel.mp3",)}',
+                    __no_wait=True,
+                )
                 QproDefaultConsole.clear()
                 return None
             time.sleep(0.05 if is_busy else 1.5)
@@ -108,6 +119,10 @@ def serv(auto_paste: bool = False):
                         )
                     )
                     QproDefaultConsole.print(QproInfoString, "翻译完成, 已复制到粘贴板")
+                    external_exec(
+                        f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","complete.mp3",)}',
+                        __no_wait=True,
+                    )
                 else:
                     QproDefaultConsole.clear()
                 status.update("监听记录中...")

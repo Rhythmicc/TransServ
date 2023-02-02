@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 
 setup(
     name="TransServ",
@@ -20,7 +20,10 @@ setup(
     url="https://github.com/Rhythmicc/TransServ",
     license="MIT",
     packages=find_packages(),
-    include_package_data=True,
+    package_data={
+        "": ["*"],
+        "TransServ": ["audio_source/*"],
+    },
     zip_safe=True,
     install_requires=["Qpro", "QuickStart_Rhy"],
     entry_points={
