@@ -5,7 +5,7 @@ app = Commander("ts")
 
 
 @app.command()
-def serv(auto_paste: bool = False):
+def serv(auto_paste: bool = False, disable_audio: bool = False):
     """
     启动服务
     Start service
@@ -56,25 +56,28 @@ def serv(auto_paste: bool = False):
                 res += " " + pattern.sub(
                     lambda m: replace_table[re.escape(m.group(0))], cur
                 )
-                external_exec(
-                    f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","recorded.mp3",)}',
-                    __no_wait=True,
-                )
+                if not disable_audio:
+                    external_exec(
+                        f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","recorded.mp3",)}',
+                        __no_wait=True,
+                    )
                 QproDefaultConsole.clear()
                 QproDefaultConsole.print(
                     Panel("[bold green]" + res + "[/]", title="当前记录", width=_width)
                 )
             if kb.is_pressed(finishCopy) and is_busy:
-                external_exec(
-                    f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","translating.mp3",)}',
-                    __no_wait=True,
-                )
+                if not disable_audio:
+                    external_exec(
+                        f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","translating.mp3",)}',
+                        __no_wait=True,
+                    )
                 break
             elif kb.is_pressed(cancelCopy) and is_busy:
-                external_exec(
-                    f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","cancel.mp3",)}',
-                    __no_wait=True,
-                )
+                if not disable_audio:
+                    external_exec(
+                        f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","cancel.mp3",)}',
+                        __no_wait=True,
+                    )
                 QproDefaultConsole.clear()
                 return None
             time.sleep(0.05 if is_busy else 1.5)
@@ -119,10 +122,11 @@ def serv(auto_paste: bool = False):
                         )
                     )
                     QproDefaultConsole.print(QproInfoString, "翻译完成, 已复制到粘贴板")
-                    external_exec(
-                        f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","complete.mp3",)}',
-                        __no_wait=True,
-                    )
+                    if not disable_audio:
+                        external_exec(
+                            f'afplay {os.path.join(os.path.dirname(__file__),"audio_source","complete.mp3",)}',
+                            __no_wait=True,
+                        )
                 else:
                     QproDefaultConsole.clear()
                 status.update("监听记录中...")
