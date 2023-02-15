@@ -1,0 +1,33 @@
+#compdef ts
+
+local cur prev
+cur=${words[CURRENT]}
+prev=${words[CURRENT-1]}
+
+(( $+functions[_ts_args_comp] )) || 
+_ts_args_comp() {
+    local -a opt_args
+    
+_arguments -S -s '*:filename:_files'
+return
+
+    _describe subcommand opt_args
+}
+
+(( $+functions[_ts_main] )) || 
+_ts_main() {
+    local -a args
+    args=(
+        complete:'获取补全列表'
+        serv:'启动服务
+    Start service'
+    )
+
+    _describe -t common-commands 'common commands' args && _ret=0
+}
+
+if (( ${#words} >= 3 )); then
+    _ts_args_comp
+else
+    _ts_main
+fi

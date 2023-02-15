@@ -1,7 +1,7 @@
 from QuickProject.Commander import Commander
 from . import *
 
-app = Commander("ts")
+app = Commander("ts", seg_flag=True)
 
 
 @app.command()
@@ -11,6 +11,7 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
     Start service
 
     :param auto_paste: 是否自动粘贴翻译结果
+    :param disable_audio: 是否禁用音效
     """
     import re
     import time
