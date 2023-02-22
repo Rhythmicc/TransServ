@@ -88,9 +88,11 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
     with QproDefaultStatus("监听记录中...") as status:
         while True:
             if ct := record():
+                cur_lang = requirePackage("langid", "classify")(ct)[0]
+                QproDefaultConsole.print(QproInfoString, f"检测到语言: {cur_lang}")
                 status.update("正在翻译...")
                 retry = 3
-                while (res := translate(ct)) and (not res or res == "[ERROR] 请求失败了"):
+                while (res := translate(ct, None if cur_lang != user_lang else 'EN-US')) and (not res or res == "[ERROR] 请求失败了"):
                     retry -= 1
                     if retry < 0:
                         QproDefaultConsole.print(QproErrorString, "翻译失败，请检查网络连接或API有效性")
