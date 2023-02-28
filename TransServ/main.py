@@ -29,22 +29,25 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
     cancelCopy = config.select("cancelCopy")
     keyboard_controller = keyboard.Controller()
 
+    replace_table = {
+        re.escape("\r"): "",
+        re.escape("\n"): " ",
+        re.escape("ﬁ"): "fi",
+        re.escape("ﬂ"): "fl",
+        re.escape("ﬀ"): "ff",
+        re.escape("ﬃ"): "ffi",
+        re.escape("ﬄ"): "ffl",
+        re.escape("ﬅ"): "ft",
+        re.escape("ﬆ"): "st",
+        re.escape("ð"): "(",
+        re.escape("Þ"): ")",
+        re.escape("Â"): "×"
+    }
+    pattern = re.compile("|".join(replace_table.keys()))
+
     def record():
         res = ""
         cur = pyperclip.paste()
-        replace_table = {
-            re.escape("\r"): "",
-            re.escape("\n"): " ",
-            re.escape("ﬁ"): "fi",
-            re.escape("ﬂ"): "fl",
-            re.escape("ﬀ"): "ff",
-            re.escape("ﬃ"): "ffi",
-            re.escape("ﬄ"): "ffl",
-            re.escape("ﬅ"): "ft",
-            re.escape("ﬆ"): "st",
-        }
-        pattern = re.compile("|".join(replace_table.keys()))
-
         is_busy = False
 
         while True:
