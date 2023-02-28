@@ -21,7 +21,7 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
     from pynput.keyboard import Key
     from rich.panel import Panel
     from QuickStart_Rhy import platform
-    from QuickStart_Rhy.api import translate
+    from QuickStart_Rhy.apiTools import translate
     from QuickProject import QproErrorString
 
     _width = QproDefaultConsole.width
@@ -41,7 +41,9 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
         re.escape("ﬆ"): "st",
         re.escape("ð"): "(",
         re.escape("Þ"): ")",
-        re.escape("Â"): "×"
+        re.escape("Â"): "×",
+        re.escape("À"): "-",
+        re.escape("¼"): "=",
     }
     pattern = re.compile("|".join(replace_table.keys()))
 
