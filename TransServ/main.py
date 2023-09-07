@@ -19,6 +19,8 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
     import keyboard as kb
     from pynput import keyboard
     from pynput.keyboard import Key
+    from pynput import mouse
+    from pynput.mouse import Button
     from rich.panel import Panel
     from QuickStart_Rhy import platform
     from QuickStart_Rhy.apiTools import translate
@@ -28,6 +30,7 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
     finishCopy = config.select("finishCopy")
     cancelCopy = config.select("cancelCopy")
     keyboard_controller = keyboard.Controller()
+    mouse_controller = mouse.Controller()
 
     replace_table = {
         re.escape("\r"): "",
@@ -89,40 +92,33 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
             time.sleep(0.05 if is_busy else 1.5)
         return res.strip()
 
+    def _translate(ct):
+        try:
+            return translate(ct)
+        except Exception as e:
+            QproDefaultConsole.print(QproErrorString, e)
+            return None
     # 监听粘贴板
     with QproDefaultStatus("监听记录中...") as status:
         while True:
             if ct := record():
                 status.update("正在翻译...")
                 retry = 3
-                while (res := translate(ct)) and (not res or res == "[ERROR] 请求失败了"):
+                while retry:
                     retry -= 1
-                    if retry < 0:
-                        QproDefaultConsole.print(QproErrorString, "翻译失败，请检查网络连接或API有效性")
+                    if not(res := translate(ct)):
+                        continue
                     time.sleep(1)
 
                 if res and res != "[ERROR] 请求失败了":
                     pyperclip.copy(res)
                     if auto_paste:
-                        keyboard_controller.press(
-                            Key.cmd if platform.startswith("darwin") else Key.ctrl
-                        )
-                        keyboard_controller.press("v")
-                        keyboard_controller.release("v")
-                        keyboard_controller.release(
-                            Key.cmd if platform.startswith("darwin") else Key.ctrl
-                        )
+                        auto_action(keyboard_controller, mouse_controller, platform, Key, Button)
 
                     QproDefaultConsole.clear()
                     QproDefaultConsole.print(
                         Panel(
-                            "[bold]"
-                            + ct
-                            + "[/]\n"
-                            + "-" * (_width - 4)
-                            + "\n[bold green]"
-                            + res
-                            + "[/]",
+                            f"[bold]{ct}[/]\n{'-' * (_width - 4)}\n[bold green]{res}[/]",
                             title="[bold magenta]原文 + 译文[/]",
                             width=_width,
                         )
@@ -134,6 +130,7 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
                             __no_wait=True,
                         )
                 else:
+                    QproDefaultConsole.print(QproErrorString, "翻译失败")
                     QproDefaultConsole.clear()
                 status.update("监听记录中...")
 

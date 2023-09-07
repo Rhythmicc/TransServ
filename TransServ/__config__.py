@@ -21,8 +21,14 @@ questions = {
 
 def init_config():
     with open(config_path, "w") as f:
+        basic_config = {i: _ask(questions[i]) for i in questions}
+        basic_config.update({
+            "actions": [
+                ["keyboard", ".ctrl", "v"]
+            ]
+        })
         json.dump(
-            {i: _ask(questions[i]) for i in questions}, f, indent=4, ensure_ascii=False
+            basic_config, f, indent=4, ensure_ascii=False
         )
     QproDefaultConsole.print(
         QproInfoString,

@@ -9,7 +9,8 @@ if enable_config:
     config = TransServConfig()
 
 import sys
-from QuickProject import user_pip, _ask, external_exec, QproDefaultStatus
+import time
+from QuickProject import user_pip, _ask, external_exec, QproDefaultStatus, QproErrorString
 
 
 def requirePackage(
@@ -64,3 +65,19 @@ def requirePackage(
             exit(-1)
     finally:
         return eval(f"{module if module else pname}")
+
+
+def auto_action(keyboard_controller, mouse_controller, Key, Button):
+    actions = config.select('actions')
+    for item in actions:
+        if item[0] == 'keyboard':
+            for key in item[1:]:
+                keyboard_controller.press(eval(f'Key{key}') if key.startswith('.') else key)
+            for key in item[1:]:
+                keyboard_controller.release(eval(f'Key{key}') if key.startswith('.') else key)
+        elif item[0] == 'mouse':
+            mouse_controller.click(eval(f'Button.{item[1]}'), item[2])
+        elif item[0] == 'sleep':
+            time.sleep(item[1])
+        else:
+            QproDefaultConsole.print(QproErrorString, f'未知的操作类型: {item[0]}')
