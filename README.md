@@ -34,3 +34,10 @@ sudo ts serv --auto_paste # 在Mac上启动服务，翻译完成后自动粘贴
 
 1. 使用本插件需要配置 [QuickStart_Rhy](https://github.com/Rhythmicc/qs) 库中的翻译引擎，支持`Alapi`、`腾讯云`、`DeepL`。（推荐使用 DeepL，翻译结果更好；你可以在海鲜市场购买一个 DeepL 的 API 账号）
 2. Mac 用户需要 sudo 权限以允许本脚本监听键盘事件
+3. 当你把 Mac 的 `caps` 键用作输入法切换键时，keyboard库会错误识别 `key_name`，因此需要进行如下修改：
+
+    ```python
+    # 修改 keyboard 库中的 _darwinkeyboard.py 的handler方法：在第376行后添加如下内容：
+    if key_name is None:
+        return None
+    ```

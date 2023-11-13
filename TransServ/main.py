@@ -92,12 +92,6 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
             time.sleep(0.05 if is_busy else 1.5)
         return res.strip()
 
-    def _translate(ct):
-        try:
-            return translate(ct)
-        except Exception as e:
-            QproDefaultConsole.print(QproErrorString, e)
-            return None
     # 监听粘贴板
     with QproDefaultStatus("监听记录中...") as status:
         while True:
