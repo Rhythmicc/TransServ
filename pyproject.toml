@@ -1,0 +1,36 @@
+[project]
+url = "https://github.com/Rhythmicc/TransServ"
+
+[tool.qpro]
+[[tool.qpro.server_targets]]
+user = "lianhaocheng"
+host = "localhost"
+port = 22
+path = "/opt/homebrew/lib/python3.11/site-packages/"
+
+[tool.qpro.config]
+build = ""
+entry_point = "TransServ/main.py"
+executable = "python3 -m TransServ.main"
+input_file = ""
+template_root = ""
+enable_complete = true
+
+[tool.poetry]
+name = "transserv"
+version = "0.0.4"
+description = "监听粘贴板内容并自动拷贝翻译结果"
+authors = ["Rhythmicc <rhythmlian.cn@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+QuickStart-Rhy = "^0.7.30"
+
+[tool.poetry.scripts]
+ts = "TransServ.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

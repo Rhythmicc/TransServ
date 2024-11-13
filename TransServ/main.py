@@ -22,7 +22,6 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
     from pynput import mouse
     from pynput.mouse import Button
     from rich.panel import Panel
-    from QuickStart_Rhy import platform
     from QuickStart_Rhy.apiTools import translate
     from QuickProject import QproErrorString
 
@@ -107,7 +106,7 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
                 if res and res != "[ERROR] 请求失败了":
                     pyperclip.copy(res)
                     if auto_paste:
-                        auto_action(keyboard_controller, mouse_controller, platform, Key, Button)
+                        auto_action(keyboard_controller, mouse_controller, Key, Button)
 
                     QproDefaultConsole.clear()
                     QproDefaultConsole.print(
@@ -127,6 +126,14 @@ def serv(auto_paste: bool = False, disable_audio: bool = False):
                     QproDefaultConsole.print(QproErrorString, "翻译失败")
                     QproDefaultConsole.clear()
                 status.update("监听记录中...")
+
+
+@app.command()
+def one():
+    from QuickStart_Rhy.apiTools import translate
+    
+    ct = requirePackage("pyperclip").paste()
+    requirePackage("pyperclip").copy(translate(ct))
 
 
 def main():
